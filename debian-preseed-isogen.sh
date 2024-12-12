@@ -72,7 +72,7 @@ for env in $(ls -1 ./CUSTOM); do
     chmod -w --recursive "${ISOFILEDIR}"/install.amd/
 
     # Put the grub.cfg into /boot/grub/ (respective to current environment)
-    if [ -f ./grub.cfg]; then
+    if [ -f ./grub.cfg ]; then
         rsync -av ./grub.cfg "${ISOFILEDIR}"/boot/grub/grub.cfg
     fi
 
@@ -102,9 +102,9 @@ done
 
 pwd
 
-if [ -f "${NETINST}" ]; then
+if compgen -G "${NETINST}" > /dev/null; then
     echo "Source ISO Exists, deleting..."
-    rm "${NETINST}" || exit 1
+    rm ${NETINST} || exit 1
 fi
 
 exit 0
