@@ -78,8 +78,8 @@ for ENVIRONMENT in "${ENVIRONMENTS[@]}"; do
     gzip "${ISOFILEDIR}"/install.amd/initrd
     chmod -w --recursive "${ISOFILEDIR}"/install.amd/
 
-    # Put the grub.cfg into /boot/grub/ (relative to current environment)
-    rsync -av ../GRUB/grub.cfg "${ISOFILEDIR}"/boot/grub/grub.cfg
+    # Put the grub.cfg into /boot/grub/ (respective to current environment)
+    rsync -av ./grub/grub.cfg "${ISOFILEDIR}"/boot/grub/grub.cfg
 
     # make a new checksum for the preseed iso
     cd isofiles || exit
