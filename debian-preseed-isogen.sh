@@ -16,11 +16,9 @@ NETINSTISO="ftp://cdimage.debian.org/cdimage/release/current/amd64/iso-cd"
 # URL to debian-*-amd64-netinst.iso checksum
 CHECKSUM="https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/SHA256SUMS"
 
-
 # change to the script dir
 BASEDIR=$(dirname "$0")
 cd "${BASEDIR}" || exit
-
 
 # delet old ISO file
 if [ -f "${NETINST}" ]; then
@@ -37,21 +35,16 @@ if [[ -n $(head --lines=1 <(curl --silent ${CHECKSUM} 2> /dev/null) | sha256sum 
     exit
 fi
 
+ENVS
 
-# start a for loop for every pressed
-ENVIRONMENTS=(
-    INSIDE
-    DMZ
-)
+for env in $(ls -1 ./CUSTOM); do
 
+    echo "Creating ${env}..."
 
-for ENVIRONMENT in "${ENVIRONMENTS[@]}"; do
+    ISOFILE="${env}-preseed-debian-netinst.iso"
 
 
-    ISOFILE="${ENVIRONMENT}-preseed-debian-netinst.iso"
-
-
-    cd "${ENVIRONMENT}" || exit
+    cd ./CUSTOM/"${env}" || exit
 
 
     # if there is a tmp dir it gets deleted
@@ -68,7 +61,7 @@ for ENVIRONMENT in "${ENVIRONMENTS[@]}"; do
 
 
     # unzip the newest debian-*-amd64-netinst.iso into a tmp dir
-    7z x  ../debian-*-amd64-netinst.iso -o"${ISOFILEDIR}"
+    7z x  ../../debian-*-amd64-netinst.iso -o"${ISOFILEDIR}"
 
 
     # Put the  preseed.cfg into initrd
@@ -101,7 +94,13 @@ for ENVIRONMENT in "${ENVIRONMENTS[@]}"; do
         sudo rm --force --recursive "${ISOFILEDIR}"
     fi
 
-
-    cd ..
-
+    # Exit Environment Directory
+    cd ../.. || exit 1
 done
+
+if [ -f "${NETINST}" ]; then
+    echo "Source ISO Exists, deleting..."
+    rm "${NETINST}" || exit 1
+fi
+
+exit 0
