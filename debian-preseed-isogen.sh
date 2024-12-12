@@ -72,7 +72,9 @@ for env in $(ls -1 ./CUSTOM); do
     chmod -w --recursive "${ISOFILEDIR}"/install.amd/
 
     # Put the grub.cfg into /boot/grub/ (respective to current environment)
-    rsync -av ./grub/grub.cfg "${ISOFILEDIR}"/boot/grub/grub.cfg
+    if [ -f ./grub.cfg]; then
+        rsync -av ./grub.cfg "${ISOFILEDIR}"/boot/grub/grub.cfg
+    fi
 
     # make a new checksum for the preseed iso
     cd isofiles || exit
@@ -97,6 +99,8 @@ for env in $(ls -1 ./CUSTOM); do
     # Exit Environment Directory
     cd ../.. || exit 1
 done
+
+pwd
 
 if [ -f "${NETINST}" ]; then
     echo "Source ISO Exists, deleting..."

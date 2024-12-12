@@ -21,17 +21,23 @@ To use this script, follow these steps:
 
         $ cd debain-pressed-iso-generator
 
-3. Put your <code>preseed.cfg</code> files in the <code>DMZ</code> and <code>INSIDE</code> directories.
-4. Move your <code>grub.cfg</code> file into the <code>GRUB</code> directory.
-5. Make the script executable:
+3. Make a directory in `./CUSTOM/` and name it what you want your iso to be named.
+        
+        `$ mkdir -p ./CUSTOM/customiso`
+
+4. Move your `preseed.cfg` and your `grub.cfg` (if you made a custom one) into the directory you created.
+
+5. Repeat steps 3 & 4 for however many custom images you would like to make.
+
+6. Make the script executable:
 
        $ chmod +x debian-preseed-iso-generator.sh
 
-6. Run the script:
+7. Run the script:
 
        $ ./debian-preseed-iso-generator.sh
 
-7. After the script has finished running, you will find the generated ISO images in the <code>DMZ</code> and <code>INSIDE</code> directories, respectively. These ISOs contain the preconfigured settings specified in the <code>preseed.cfg</code> files.
+8. After the script has finished running, you will find the generated ISO images in the directories you created. These ISOs contain the preconfigured settings specified in the <code>preseed.cfg</code> files.
 
 That's it! Now you can use the generated ISOs to install Debian on multiple machines with the same preconfigured settings.
 
