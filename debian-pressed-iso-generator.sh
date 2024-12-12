@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # This script generates debian ISOs with preseed for multiple environments
 
+# Check if running with sudo or as root
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root." 1>&2
+    exit 1
+fi
+
 # name of tmp dir
 ISOFILEDIR="isofiles"
 # filename debian netinstall iso 
@@ -72,6 +78,8 @@ for ENVIRONMENT in "${ENVIRONMENTS[@]}"; do
     gzip "${ISOFILEDIR}"/install.amd/initrd
     chmod -w --recursive "${ISOFILEDIR}"/install.amd/
 
+    # Put the grub.cfg into /boot/grub/ (relative to current environment)
+    rsync -av ../GRUB/grub.cfg "${ISOFILEDIR}"/boot/grub/grub.cfg
 
     # make a new checksum for the preseed iso
     cd isofiles || exit
